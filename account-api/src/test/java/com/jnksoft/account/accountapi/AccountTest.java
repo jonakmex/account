@@ -3,14 +3,12 @@ package com.jnksoft.account.accountapi;
 import com.jnksoft.account.model.Account;
 import com.jnksoft.account.model.Transaction;
 import org.apache.log4j.Logger;
-import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.Optional;
 
 import static com.jnksoft.account.model.enums.TransactionType.INCOME;
@@ -111,6 +109,41 @@ public class AccountTest {
         Optional<Transaction> head = account.getHeadTransaction();
         assertTrue(head.isPresent());
         assertEquals(500.0,head.get().getBalance());
+        assertEquals(500.0,account.getBalance());
     }
 
+    @Test
+    public void should_remove_transaction_at_beginning(){
+        Account account = new Account(1000.00);
+        Transaction t01 = new Transaction(LocalDateTime.now().minusDays(3),"Transaction 1", OUTCOME,100.0);
+        t01.setId("1");
+        Transaction t02 = new Transaction(LocalDateTime.now().minusDays(2),"Transaction 2", OUTCOME,100.0);
+        t02.setId("2");
+        Transaction t03 = new Transaction(LocalDateTime.now().minusDays(1),"Transaction 3", OUTCOME,100.0);
+        t03.setId("3");
+
+        account.postTransaction(t01);
+        account.postTransaction(t02);
+        account.postTransaction(t03);
+
+        account.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getDate).reversed())
+                .forEach(t -> System.out.println(t.getDescription()+" | "+t.getAddAmount()+ "|"+t.getBalance() + "|"+ t.getDate()));
+        System.out.println("Balance:"+account.getBalance());
+
+        account.undoTransaction("2");
+
+        account.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getDate).reversed())
+                .forEach(t -> System.out.println(t.getDescription()+" | "+t.getAddAmount()+ "|"+t.getBalance() + "|"+ t.getDate()));
+        System.out.println("Balance:"+account.getBalance());
+
+        Optional<Transaction> head = account.getHeadTransaction();
+        assertTrue(head.isPresent());
+        assertEquals("Transaction 3",head.get().getDescription());
+        assertEquals(800,head.get().getBalance());
+        assertEquals(800.0,account.getBalance());
+    }
 }
