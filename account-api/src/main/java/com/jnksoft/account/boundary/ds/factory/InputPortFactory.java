@@ -3,6 +3,7 @@ package com.jnksoft.account.boundary.ds.factory;
 import com.jnksoft.account.boundary.ds.input.CreateAccountInputPort;
 import com.jnksoft.account.boundary.ds.input.InputPort;
 import com.jnksoft.account.boundary.ds.input.PostTransactionInputPort;
+import com.jnksoft.account.boundary.ds.input.TransferInputPort;
 import com.jnksoft.account.model.enums.TransactionType;
 import org.joda.time.LocalDateTime;
 
@@ -14,7 +15,23 @@ public class InputPortFactory {
             return makeCreateAccountInputPort(params);
         if("PostTransactionInputPort".equals(name))
             return makePostTransactionInputPort(params);
+        if("TransferInputPort".equals(name))
+            return makeTransferInputPort(params);
         return null;
+    }
+
+    private static InputPort makeTransferInputPort(Map<String, Object> params) {
+        TransferInputPort transferInputPort = new TransferInputPort();
+        if(params.get("fromAccountId") != null)
+            transferInputPort.fromAccountId = params.get("fromAccountId").toString();
+        if(params.get("toAccountId") != null)
+            transferInputPort.toAccountId = params.get("toAccountId").toString();
+        if(params.get("amount") != null)
+            transferInputPort.amount = Double.valueOf(params.get("amount").toString());
+        if(params.get("date") != null)
+            transferInputPort.date = (LocalDateTime) params.get("date");
+
+        return transferInputPort;
     }
 
     private static InputPort makePostTransactionInputPort(Map<String, Object> params) {
