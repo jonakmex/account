@@ -10,10 +10,8 @@ import com.jnksoft.account.gateway.AccountSaveGateway;
 import com.jnksoft.account.gateway.TransactionSaveGateway;
 import com.jnksoft.account.model.Account;
 import com.jnksoft.account.model.Transaction;
-import com.jnksoft.account.model.enums.TransactionType;
 import org.joda.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import java.util.HashMap;
