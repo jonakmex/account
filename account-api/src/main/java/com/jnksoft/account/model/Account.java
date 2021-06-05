@@ -91,10 +91,8 @@ public class Account {
     private Optional<Transaction> getBottomTransaction(LocalDateTime cutDate) {
         return  transactions
                 .stream()
-                .filter(t -> t.getDate().compareTo(cutDate) <= 0)
+                .filter(t -> t.getDate().compareTo(cutDate) < 0)
                 .sorted(Comparator.comparing(Transaction::getDate).reversed())
                 .findFirst();
     }
-
-
 }

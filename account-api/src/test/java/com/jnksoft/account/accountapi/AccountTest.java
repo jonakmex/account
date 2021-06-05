@@ -40,6 +40,11 @@ public class AccountTest {
         account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 4", OUTCOME,100.0));
         account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 5", OUTCOME,100.0));
         account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 6", OUTCOME,100.0));
+        account.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getDate).reversed())
+                .forEach(t -> System.out.println(t.getDescription()+" | "+t.getAddAmount()+ "|"+t.getBalance() + "|"+ t.getDate()));
+        System.out.println("Balance:"+account.getBalance());
         assertEquals(500.0,account.getBalance());
     }
 
@@ -79,7 +84,7 @@ public class AccountTest {
 
         // Insert in at beginning
         account.postTransaction(new Transaction(LocalDateTime.now().minusDays(1),"Transaction 0", OUTCOME,100.0));
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("Y-M-d H:m:s:S");
+
         account.getTransactions()
                 .stream()
                 .sorted(Comparator.comparing(Transaction::getDate).reversed())
@@ -97,9 +102,15 @@ public class AccountTest {
         account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 2", OUTCOME,100.0));
         account.postTransaction(new Transaction(LocalDateTime.now().minusDays(1),"Transaction 3", OUTCOME,100.0));
 
-        // Insert in at beginning
+        account.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getDate).reversed())
+                .forEach(t -> System.out.println(t.getDescription()+" | "+t.getAddAmount()+ "|"+t.getBalance() + "|"+ t.getDate()));
+        System.out.println("Balance:"+account.getBalance());
+
+        // Insert in the middle
         account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 0", OUTCOME,100.0));
-        DateTimeFormatter fmt = DateTimeFormat.forPattern("Y-M-d H:m:s:S");
+
         account.getTransactions()
                 .stream()
                 .sorted(Comparator.comparing(Transaction::getDate).reversed())
@@ -108,8 +119,8 @@ public class AccountTest {
 
         Optional<Transaction> head = account.getHeadTransaction();
         assertTrue(head.isPresent());
-        assertEquals(500.0,head.get().getBalance());
-        assertEquals(500.0,account.getBalance());
+        assertEquals(600.0,head.get().getBalance());
+        assertEquals(600.0,account.getBalance());
     }
 
     @Test
