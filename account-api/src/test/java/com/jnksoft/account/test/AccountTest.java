@@ -10,7 +10,7 @@ import java.util.Comparator;
 import java.util.Optional;
 
 import static com.jnksoft.account.model.enums.TransactionType.INCOME;
-import static com.jnksoft.account.model.enums.TransactionType.OUTCOME;
+import static com.jnksoft.account.model.enums.TransactionType.EXPENSE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -33,11 +33,11 @@ public class AccountTest {
     public void should_add_one_income_five_outcomes(){
         Account account = new Account();
         account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 1", INCOME,1000.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 4", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 5", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 6", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 4", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 5", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 6", EXPENSE,100.0));
         account.getTransactions()
                 .stream()
                 .sorted(Comparator.comparing(Transaction::getDate).reversed())
@@ -50,11 +50,11 @@ public class AccountTest {
     public void should_add_one_income_five_outcomes_with_initial_balance(){
         Account account = new Account(545.00);
         account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 1", INCOME,1000.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 4", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 5", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 6", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 4", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 5", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 6", EXPENSE,100.0));
         assertEquals(1045.0,account.getBalance());
     }
 
@@ -62,11 +62,11 @@ public class AccountTest {
     public void should_keep_balance_on_transaction_init_balance_0(){
         Account account = new Account();
         account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 1", INCOME,1000.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 4", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 5", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 6", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 4", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 5", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 6", EXPENSE,100.0));
         assertEquals(500.0,account.getBalance());
     }
 
@@ -74,14 +74,14 @@ public class AccountTest {
     @Test
     public void should_post_transaction_at_the_beginning() throws InterruptedException {
         Account account = new Account(1000.00);
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 1", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 1", EXPENSE,100.0));
         Thread.sleep(1);
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 2", EXPENSE,100.0));
         Thread.sleep(1);
-        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now(),"Transaction 3", EXPENSE,100.0));
 
         // Insert in at beginning
-        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(1),"Transaction 0", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(1),"Transaction 0", EXPENSE,100.0));
 
         account.getTransactions()
                 .stream()
@@ -96,9 +96,9 @@ public class AccountTest {
     @Test
     public void should_post_transaction_in_the_middle() throws InterruptedException {
         Account account = new Account(1000.00);
-        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(3),"Transaction 1", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 2", OUTCOME,100.0));
-        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(1),"Transaction 3", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(3),"Transaction 1", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 2", EXPENSE,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(1),"Transaction 3", EXPENSE,100.0));
 
         account.getTransactions()
                 .stream()
@@ -107,7 +107,7 @@ public class AccountTest {
         System.out.println("Balance:"+account.getBalance());
 
         // Insert in the middle
-        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 0", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 0", EXPENSE,100.0));
 
         account.getTransactions()
                 .stream()
@@ -124,11 +124,11 @@ public class AccountTest {
     @Test
     public void should_remove_transaction_at_beginning(){
         Account account = new Account(1000.00);
-        Transaction t01 = new Transaction(LocalDateTime.now().minusDays(3),"Transaction 1", OUTCOME,100.0);
+        Transaction t01 = new Transaction(LocalDateTime.now().minusDays(3),"Transaction 1", EXPENSE,100.0);
         t01.setId("1");
-        Transaction t02 = new Transaction(LocalDateTime.now().minusDays(2),"Transaction 2", OUTCOME,100.0);
+        Transaction t02 = new Transaction(LocalDateTime.now().minusDays(2),"Transaction 2", EXPENSE,100.0);
         t02.setId("2");
-        Transaction t03 = new Transaction(LocalDateTime.now().minusDays(1),"Transaction 3", OUTCOME,100.0);
+        Transaction t03 = new Transaction(LocalDateTime.now().minusDays(1),"Transaction 3", EXPENSE,100.0);
         t03.setId("3");
 
         account.postTransaction(t01);

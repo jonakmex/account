@@ -80,14 +80,14 @@ public class Account {
         }
     }
 
-    private List<Transaction> getTopTransactions(LocalDateTime cutDate) {
+    public List<Transaction> getTopTransactions(LocalDateTime cutDate) {
         return transactions
                 .stream()
                 .filter(t -> t.getDate().compareTo(cutDate) >= 0)
                 .collect(Collectors.toList());
     }
 
-    private Optional<Transaction> getBottomTransaction(LocalDateTime cutDate) {
+    public Optional<Transaction> getBottomTransaction(LocalDateTime cutDate) {
         return  transactions
                 .stream()
                 .filter(t -> t.getDate().compareTo(cutDate) < 0)
