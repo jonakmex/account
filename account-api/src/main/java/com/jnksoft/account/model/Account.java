@@ -30,7 +30,6 @@ public class Account {
     }
 
     public void postTransaction(Transaction transaction) {
-
         Optional<Transaction> bottomTransaction = getBottomTransaction(transaction.getDate());
         if(bottomTransaction.isPresent()){
             balance = bottomTransaction.get().getBalance();

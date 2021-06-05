@@ -1,11 +1,9 @@
-package com.jnksoft.account.accountapi;
+package com.jnksoft.account.test;
 
 import com.jnksoft.account.model.Account;
 import com.jnksoft.account.model.Transaction;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
