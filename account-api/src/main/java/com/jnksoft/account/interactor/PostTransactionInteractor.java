@@ -44,7 +44,9 @@ public class PostTransactionInteractor implements Interactor {
                 if(transactions == null)
                     transactions = new ArrayList<>();
 
-                transactions.add(accountRetrieverGateway.findBottomTransaction(account.getId(),postTransactionInputPort.getDate()));
+                Transaction bottomTransaction = accountRetrieverGateway.findBottomTransaction(account.getId(),postTransactionInputPort.getDate());
+                if(bottomTransaction != null)
+                    transactions.add(bottomTransaction);
 
                 account.setTransactions(transactions);
                 account.postTransaction(new Transaction(postTransactionInputPort.date
