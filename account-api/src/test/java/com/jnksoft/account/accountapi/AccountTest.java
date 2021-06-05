@@ -91,5 +91,26 @@ public class AccountTest {
         assertTrue(head.isPresent());
         assertEquals(600.0,head.get().getBalance());
     }
-    
+
+    @Test
+    public void should_post_transaction_in_the_middle() throws InterruptedException {
+        Account account = new Account(1000.00);
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(3),"Transaction 1", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 2", OUTCOME,100.0));
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(1),"Transaction 3", OUTCOME,100.0));
+
+        // Insert in at beginning
+        account.postTransaction(new Transaction(LocalDateTime.now().minusDays(2),"Transaction 0", OUTCOME,100.0));
+        DateTimeFormatter fmt = DateTimeFormat.forPattern("Y-M-d H:m:s:S");
+        account.getTransactions()
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getDate).reversed())
+                .forEach(t -> System.out.println(t.getDescription()+" | "+t.getAddAmount()+ "|"+t.getBalance() + "|"+ t.getDate()));
+        System.out.println("Balance:"+account.getBalance());
+
+        Optional<Transaction> head = account.getHeadTransaction();
+        assertTrue(head.isPresent());
+        assertEquals(500.0,head.get().getBalance());
+    }
+
 }
