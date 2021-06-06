@@ -94,4 +94,15 @@ public class Account {
                 .sorted(Comparator.comparing(Transaction::getDate).reversed())
                 .findFirst();
     }
+
+    public void totalize() {
+        balance = initialBalance;
+        transactions
+                .stream()
+                .sorted(Comparator.comparing(Transaction::getDate))
+                .forEach(t -> {
+                    balance += t.getAddAmount();
+                    t.setBalance(balance);
+                });
+    }
 }

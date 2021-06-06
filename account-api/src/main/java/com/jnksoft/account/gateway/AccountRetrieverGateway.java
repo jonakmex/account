@@ -11,4 +11,5 @@ public interface AccountRetrieverGateway {
     Account findById(String id);
     List<Transaction> findTopTransactions(String accountId, LocalDateTime localDateTime);
     Transaction findBottomTransaction(String accountId, LocalDateTime localDateTime);
+    List<Transaction> findTransactions();
 }

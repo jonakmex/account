@@ -5,6 +5,7 @@ import com.jnksoft.account.gateway.AccountRetrieverGateway;
 import com.jnksoft.account.gateway.AccountSaveGateway;
 import com.jnksoft.account.gateway.TransactionSaveGateway;
 import com.jnksoft.account.interactor.CreateAccountInteractor;
+import com.jnksoft.account.interactor.EditAccountInteractor;
 import com.jnksoft.account.interactor.PostTransactionInteractor;
 import com.jnksoft.account.interactor.TransferInteractor;
 
@@ -24,8 +25,17 @@ public class InteractorFactory {
             return makePostTransactionInteractor();
         if("TransferInteractor".equals(name))
             return makeTransferInteractor();
+        if("EditAccountInteractor".equals(name))
+            return makeEditAccountInteractor();
 
         return null;
+    }
+
+    private Interactor makeEditAccountInteractor() {
+        AccountSaveGateway accountSaveGateway= (AccountSaveGateway) context.get("accountSaveGateway");
+        AccountRetrieverGateway accountRetrieverGateway= (AccountRetrieverGateway) context.get("accountRetrieverGateway");
+        TransactionSaveGateway transactionSaveGateway = (TransactionSaveGateway) context.get("transactionSaveGateway");
+        return new EditAccountInteractor(accountSaveGateway,accountRetrieverGateway,transactionSaveGateway);
     }
 
     private Interactor makeTransferInteractor() {
